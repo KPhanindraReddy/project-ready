@@ -24,6 +24,28 @@ Tried it on your own repository? [Report a missed check or false alarm](https://
 
 In this scan, the functions folder declares Firebase packages that the scanner could not find locally. Its environment template also lists keys that are missing from the checked environment. The last column suggests a next step for each row.
 
+## Use in GitHub Actions
+
+On Linux runners, add this workflow to `.github/workflows/project-ready.yml`. Pull requests that add a key to a root or nested `.env.example` get a job summary showing the new key names. Values are never printed. The check reads both versions from Git history and does not need application dependencies or secrets.
+
+```yaml
+name: Project setup changes
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  setup-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: KPhanindraReddy/project-ready@action-v0.1.0
+```
+
+Open the workflow run's **Summary** to see the result.
+
 ## Command options
 
 ```sh

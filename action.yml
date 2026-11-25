@@ -1,0 +1,12 @@
+name: Project Ready - Environment Changes
+description: Show added environment keys in a pull request summary without printing their values.
+author: KPhanindraReddy
+branding:
+  icon: list
+  color: green
+runs:
+  using: composite
+  steps:
+    - name: Summarize setup changes
+      shell: bash
+      run: python3 -I -S "$GITHUB_ACTION_PATH/action/env_changes.py"
