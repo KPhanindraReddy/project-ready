@@ -1,0 +1,18 @@
+name: Scan feedback
+description: Report a missed check, false alarm, or unclear result.
+title: "[Scan feedback] "
+body:
+  - type: input
+    id: stack
+    attributes:
+      label: Which language and package manager did you use?
+      placeholder: React with npm on Windows
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: What did the scanner report, and what did you expect?
+      description: Include a short example. Remove tokens, private paths and environment values.
+    validations:
+      required: true

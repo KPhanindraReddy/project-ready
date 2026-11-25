@@ -12,6 +12,12 @@ npx @phani50101/project-ready@beta
 
 [View the beta on npm](https://www.npmjs.com/package/@phani50101/project-ready)
 
+## See a setup problem get fixed
+
+![A missing API_URL is flagged on the first scan and passes after it is added to .env](docs/setup-demo.gif)
+
+Tried it on your own repository? [Report a missed check or false alarm](https://github.com/KPhanindraReddy/project-ready/issues/new?template=scan-feedback.yml).
+
 ## Example scan
 
 ![Project Ready terminal output grouped by android/app and functions, with missing Gradle, Firebase packages and environment keys](docs/example-scan.png)
