@@ -41,7 +41,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: KPhanindraReddy/project-ready@action-v0.1.0
+      - uses: KPhanindraReddy/project-ready@532bf61b7e826427b424280eeb6d24ddb918ca5c
 ```
 
 Open the workflow run's **Summary** to see the result.
