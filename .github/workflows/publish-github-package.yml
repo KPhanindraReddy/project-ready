@@ -1,0 +1,28 @@
+name: Publish GitHub package
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/publish-github-package.yml']
+permissions:
+  contents: read
+  packages: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.1.0-beta.2
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com
+          scope: '@kphanindrareddy'
+      - name: Publish the tagged beta
+        run: |
+          npm pkg set name=@kphanindrareddy/project-ready repository.type=git repository.url=git+https://github.com/KPhanindraReddy/project-ready.git
+          npm publish --registry=https://npm.pkg.github.com --tag beta --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
