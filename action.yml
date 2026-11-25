@@ -1,5 +1,5 @@
-name: Project Ready - Environment Changes
-description: Show added environment keys in a pull request summary without printing their values.
+name: Project Ready - Setup Requirements
+description: Show previous and new package and runtime requirements, plus new environment key names, in pull request summaries.
 author: KPhanindraReddy
 branding:
   icon: list

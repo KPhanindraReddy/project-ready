@@ -26,7 +26,7 @@ In this scan, the functions folder declares Firebase packages that the scanner c
 
 ## Use in GitHub Actions
 
-On Linux runners, add this workflow to `.github/workflows/project-ready.yml`. Pull requests that add a key to a root or nested `.env.example` get a job summary showing the new key names. Values are never printed. The check reads both versions from Git history and does not need application dependencies or secrets.
+On Linux runners, add this workflow to `.github/workflows/project-ready.yml`. The job summary shows changed `package.json` dependency and engine requirements side by side (for example, React `^18` to `^19` or Node.js `>=20` to `>=22`). It also lists newly added `.env.example` keys. Values are never printed. The check reads both versions from Git history and does not need application dependencies or secrets.
 
 ```yaml
 name: Project setup changes
@@ -41,7 +41,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: KPhanindraReddy/project-ready@532bf61b7e826427b424280eeb6d24ddb918ca5c
+      - uses: KPhanindraReddy/project-ready@main
 ```
 
 Open the workflow run's **Summary** to see the result.

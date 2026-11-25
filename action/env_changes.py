@@ -9,12 +9,15 @@ from pathlib import Path
 def git(*args):
     return subprocess.check_output(["git", *args])
 
-def keys_at(commit, path):
+def contents_at(commit, path):
     spec = f"{commit}:{path}"
     exists = subprocess.run(["git", "cat-file", "-e", spec], capture_output=True)
     if exists.returncode:
-        return set()
-    raw = git("show", spec).decode("utf8", "replace")
+        return ""
+    return git("show", spec).decode("utf8", "replace")
+
+def keys_at(commit, path):
+    raw = contents_at(commit, path)
     return set(re.findall(r"^[ \t]*(?:export[ \t]+)?([A-Za-z_][A-Za-z_0-9]*)[ \t]*=", raw, re.M))
 
 def main():
@@ -30,19 +33,48 @@ def main():
     except subprocess.CalledProcessError:
         raise SystemExit("Cannot find the comparison commits. Use actions/checkout with fetch-depth: 0.")
     paths = git("diff", "--no-renames", "--name-only", "-z", ancestor, head, "--").split(b"\0")
-    rows = []
+    keys, versions = [], []
     for raw in paths:
-        if raw.split(b"/")[-1] != b".env.example":
-            continue
         path = os.fsdecode(raw)
-        for key in sorted(keys_at(head,path) - keys_at(ancestor,path)):
-            display = html.escape(path.encode("utf8","backslashreplace").decode()).replace("\n"," ").replace("\r"," ")
-            rows.append(f"<tr><td><code>{display}</code></td><td><code>{key}</code></td></tr>")
-    if not rows:
-        return "No new environment keys in changed .env.example files."
-    return ("Review these new keys when setting up your local environment.\n\n"
-            "<table><tr><th>Template</th><th>Added key</th></tr>\n"
-            + "\n".join(rows) + "\n</table>")
+        filename = path.rsplit("/", 1)[-1]
+        if filename == ".env.example":
+            for key in sorted(keys_at(head, path) - keys_at(ancestor, path)):
+                keys.append((path, key))
+        elif filename == "package.json":
+            before = requirements(contents_at(ancestor, path))
+            after = requirements(contents_at(head, path))
+            for section, name in sorted(before.keys() | after.keys()):
+                old = before.get((section, name))
+                new = after.get((section, name))
+                if old != new:
+                    versions.append((path, section, name, safe_spec(old), safe_spec(new)))
+    sections = []
+    if versions:
+        sections.append("### Version requirements changed\n\n" + table(
+            ["Manifest", "Type", "Item", "Previous requirement", "New requirement"], versions))
+    if keys:
+        sections.append("### New environment keys\n\n" + table(["Template", "Key"], keys))
+    return "\n\n".join(sections) or "No version requirement changes or new environment keys."
+
+def requirements(raw):
+    manifest = json.loads(raw or "{}")
+    fields = ("engines", "dependencies", "devDependencies", "peerDependencies", "optionalDependencies")
+    return {(field, name): value for field in fields
+            for name, value in manifest.get(field, {}).items()}
+
+def safe_spec(value):
+    if value is None:
+        return "—"
+    # URLs and local paths may include private information.
+    if not isinstance(value, str) or not re.fullmatch(r"[a-zA-Z0-9.*+~^<>=| _-]+", value):
+        return "Custom source (see manifest)"
+    return value
+
+def table(headers, rows):
+    def row(values, tag):
+        cells = [html.escape(str(v).encode("utf8", "backslashreplace").decode()) for v in values]
+        return "<tr>" + "".join(f"<{tag}>{v}</{tag}>" for v in cells) + "</tr>"
+    return "<table>" + row(headers, "th") + "".join(row(r, "td") for r in rows) + "</table>"
 
 if __name__ == "__main__":
     with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf8") as summary:
