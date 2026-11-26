@@ -1,5 +1,5 @@
 {
-  "name": "@phani50101/project-ready",
+  "name": "@unique50101/project-ready",
   "version": "0.1.0-beta.2",
   "description": "Offline project setup inspector for mixed-language repositories",
   "bin": {
@@ -14,5 +14,13 @@
     "README.md",
     "LICENSE"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Unique50101/project-ready.git"
+  },
+  "homepage": "https://github.com/Unique50101/project-ready#readme",
+  "bugs": {
+    "url": "https://github.com/Unique50101/project-ready/issues"
+  }
 }
