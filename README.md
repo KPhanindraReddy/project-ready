@@ -7,20 +7,20 @@ Check a repository for missing packages, incompatible Node.js versions and missi
 With Node.js 22 or newer, open a terminal in the repository you want to inspect and run:
 
 ```sh
-npx @phani50101/project-ready@beta
+npx @unique50101/project-ready@beta
 ```
 
-[View the beta on npm](https://www.npmjs.com/package/@phani50101/project-ready)
+[View the beta on npm](https://www.npmjs.com/package/@unique50101/project-ready)
 
 ## See a setup problem get fixed
 
-![A missing API_URL is flagged on the first scan and passes after it is added to .env](docs/setup-demo.gif)
+![A missing API_URL is flagged on the first scan and passes after it is added to .env](https://raw.githubusercontent.com/Unique50101/project-ready/main/docs/setup-demo.gif)
 
-Tried it on your own repository? [Report a missed check or false alarm](https://github.com/KPhanindraReddy/project-ready/issues/new?template=scan-feedback.yml).
+Tried it on your own repository? [Report a missed check or false alarm](https://github.com/Unique50101/project-ready/issues/new?template=scan-feedback.yml).
 
 ## Example scan
 
-![Project Ready terminal output grouped by android/app and functions, with missing Gradle, Firebase packages and environment keys](docs/example-scan.png)
+![Project Ready terminal output grouped by android/app and functions, with missing Gradle, Firebase packages and environment keys](https://raw.githubusercontent.com/Unique50101/project-ready/main/docs/example-scan.png)
 
 In this scan, the functions folder declares Firebase packages that the scanner could not find locally. Its environment template also lists keys that are missing from the checked environment. The last column suggests a next step for each row.
 
@@ -41,7 +41,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: KPhanindraReddy/project-ready@main
+      - uses: Unique50101/project-ready@main
 ```
 
 Open the workflow run's **Summary** to see the result.
@@ -49,9 +49,9 @@ Open the workflow run's **Summary** to see the result.
 ## Command options
 
 ```sh
-npx @phani50101/project-ready@beta ./my-project
-npx @phani50101/project-ready@beta --json
-npx @phani50101/project-ready@beta --strict
+npx @unique50101/project-ready@beta ./my-project
+npx @unique50101/project-ready@beta --json
+npx @unique50101/project-ready@beta --strict
 ```
 
 Python, Rust and .NET manifest readers also require Python 3.11 or newer on PATH.
