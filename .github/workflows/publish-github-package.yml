@@ -19,10 +19,10 @@ jobs:
         with:
           node-version: '22'
           registry-url: https://npm.pkg.github.com
-          scope: '@kphanindrareddy'
+          scope: '@unique50101'
       - name: Publish the tagged beta
         run: |
-          npm pkg set name=@kphanindrareddy/project-ready repository.type=git repository.url=git+https://github.com/KPhanindraReddy/project-ready.git
+          npm pkg set name=@unique50101/project-ready repository.type=git repository.url=git+https://github.com/Unique50101/project-ready.git
           npm publish --registry=https://npm.pkg.github.com --tag beta --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
